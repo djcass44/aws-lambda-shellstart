@@ -1,6 +1,7 @@
 # Shellstart
 
 This repository contains an AWS Lambda used for updating a docker-compose deployment.
+This script was written using Python3.6 and therefore will probably not work with Python2.
 
 ### Clarify 'updating'
 
@@ -43,3 +44,8 @@ The actual shell which is executed is `docker-compose stop && docker-compose pul
 1. Download SSH key from S3
 2. SSH into your target
 3. Execute docker-compose commands
+
+
+## Contributions
+
+Go for it! Open a merge request and I'll take a look.
