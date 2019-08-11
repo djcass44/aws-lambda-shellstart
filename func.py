@@ -42,19 +42,19 @@ def connect(event, key_path):
     c.connect(hostname=host, username=user, pkey=k)
     print(f"Connected to {user}@{host}")
 
-    commands = [
-        f"cd /home/ubuntu/{event['ssh']['directory']}"
-    ]
+    base_dir = f"cd /home/ubuntu/{event['ssh']['directory']}"
+    commands = []
     containers = event['containers']
     # if no containers are provided, update them all
     if len(containers) == 0:
-        commands.append("docker-compose down")
-        commands.append("docker-compose pull")
-        commands.append("docker-compose up -d")
+        commands.append(f"{base_dir}; docker-compose down")
+        commands.append(f"{base_dir}; docker-compose pull")
+        commands.append(f"{base_dir}; docker-compose up -d")
     else:
         # otherwise, check which containers we want to update
         for container in containers:
-            commands.append(f"docker-compose stop {container} && docker-compose pull {container} && docker-compose up -d {container}")
+            commands.append(f"{base_dir}; docker-compose stop {container} && docker-compose pull {container} && docker"
+                            f"-compose up -d {container}")
     for command in commands:
         print(f"Executing: '{command}'")
         stdin, stdout, stderr = c.exec_command(command)
