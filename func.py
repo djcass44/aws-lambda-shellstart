@@ -12,7 +12,7 @@ def get_key(event):
     s3 = boto3.client('s3')
     # download the key
     key_name = event['s3']['key']
-    s3.download_file(event['s3']['bucket'], event['s3']['path'], f"/tmp/{key_name}")
+    s3.download_file(event['s3']['bucket'], key_name, f"/tmp/{key_name}")
     return f"/tmp/{key_name}"
 
 
@@ -53,10 +53,10 @@ def connect(event, key_path):
         commands.append("docker-compose up -d")
     else:
         # otherwise, check which containers we want to update
-        for c in containers:
-            commands.append(f"docker-compose stop {c} && docker-compose pull {c} && docker-compose up -d {c}")
+        for container in containers:
+            commands.append(f"docker-compose stop {container} && docker-compose pull {container} && docker-compose up -d {container}")
     for command in commands:
-        print(f"Executing: '{c}'")
+        print(f"Executing: '{command}'")
         stdin, stdout, stderr = c.exec_command(command)
         print(stdout.read())
         print(stderr.read())
